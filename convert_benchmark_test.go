@@ -127,3 +127,33 @@ func BenchmarkMapToSlice(b *testing.B) {
 		}
 	})
 }
+
+func BenchmarkSplitSlice(b *testing.B) {
+	in := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5}
+
+	b.Run("with generics using convert.SplitSlice", func(b *testing.B) {
+		b.ReportAllocs()
+
+		for i := 0; i < b.N; i++ {
+			_ = convert.SplitSlice(in, strconv.Itoa)
+		}
+	})
+
+	b.Run("without generics", func(b *testing.B) {
+		b.ReportAllocs()
+
+		convertFn := func(in []int) map[string][]int {
+			out := make(map[string][]int, len(in))
+			for _, i := range in {
+				key := strconv.Itoa(i)
+				out[key] = append(out[key], i)
+			}
+
+			return out
+		}
+
+		for i := 0; i < b.N; i++ {
+			_ = convertFn(in)
+		}
+	})
+}

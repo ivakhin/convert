@@ -4,9 +4,10 @@
 Go package with conversion methods based on generics.
 
 ```
-SliceSafe  convert []A to   []B     without error using function convert(A) B
-Slice      convert []A to   []B     using function convert(A) (B, error)
-SliceToMap convert []T to   map[K]T using function key(T) K
+SliceSafe  convert []A to   []B       using function convert(A) B
+Slice      convert []A to   []B       using function convert(A) (B, error)
+SliceToMap convert []T to   map[K]T   using function key(T) K
+SplitSlice convert []T to   map[K][]T using function key(T) K
 MapToSlice make    []T from map[K]T
 ```
 
@@ -14,8 +15,9 @@ MapToSlice make    []T from map[K]T
 ```
 github.com/ivakhin/convert/convert.go:4:	SliceSafe	100.0%
 github.com/ivakhin/convert/convert.go:18:	Slice		100.0%
-github.com/ivakhin/convert/convert.go:38:	SliceToMap	100.0%
-github.com/ivakhin/convert/convert.go:48:	MapToSlice	100.0%
+github.com/ivakhin/convert/convert.go:39:	SliceToMap	100.0%
+github.com/ivakhin/convert/convert.go:49:	MapToSlice	100.0%
+github.com/ivakhin/convert/convert.go:63:	SplitSlice	100.0%
 total:						(statements)	100.0%
 ```
 
@@ -37,4 +39,7 @@ BenchmarkSliceToMap/without_generics-8                                   4478426
 
 BenchmarkMapToSlice/with_generics_using_convert.MapToSlice-8            11184621               108.0 ns/op            80 B/op          1 allocs/op
 BenchmarkMapToSlice/without_generics-8                                  11172945               106.0 ns/op            80 B/op          1 allocs/op
+
+BenchmarkSplitSlice/with_generics_using_convert.SplitSlice-8             1806028               663.9 ns/op          1616 B/op         17 allocs/op
+BenchmarkSplitSlice/without_generics-8                                   1826018               656.7 ns/op          1616 B/op         17 allocs/op
 ```

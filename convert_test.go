@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSliceMust(t *testing.T) {
+func TestSliceSafe(t *testing.T) {
 	t.Parallel()
 
 	t.Run("nil", func(t *testing.T) {
@@ -102,7 +102,7 @@ func TestSlice(t *testing.T) {
 	})
 }
 
-func TestSliceMap(t *testing.T) {
+func TestMapToSlice(t *testing.T) {
 	t.Parallel()
 
 	t.Run("nil", func(t *testing.T) {
@@ -142,7 +142,7 @@ func TestSliceMap(t *testing.T) {
 	})
 }
 
-func TestMapSlice(t *testing.T) {
+func TestSliceToMap(t *testing.T) {
 	t.Parallel()
 
 	t.Run("nil", func(t *testing.T) {
@@ -178,6 +178,46 @@ func TestMapSlice(t *testing.T) {
 		)
 
 		actual := convert.SliceToMap(in, strconv.Itoa)
+		assert.Equal(t, actual, expected)
+	})
+}
+
+func TestSplitSlice(t *testing.T) {
+	t.Parallel()
+
+	t.Run("nil", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       []int
+			expected = make(map[string][]int)
+		)
+
+		actual := convert.SplitSlice(in, strconv.Itoa)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("empty", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = make([]int, 0)
+			expected = make(map[string][]int)
+		)
+
+		actual := convert.SplitSlice(in, strconv.Itoa)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("regular", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = []int{1, 2, 3, 1, 2, 1}
+			expected = map[string][]int{"1": {1, 1, 1}, "2": {2, 2}, "3": {3}}
+		)
+
+		actual := convert.SplitSlice(in, strconv.Itoa)
 		assert.Equal(t, actual, expected)
 	})
 }

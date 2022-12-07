@@ -1,6 +1,6 @@
 package convert
 
-// SliceSafe convert []A to []B without error using function convert(A) B.
+// SliceSafe convert []A to []B using function convert(A) B.
 func SliceSafe[A, B any](in []A, convert func(A) B) []B {
 	if in == nil {
 		return nil
@@ -35,6 +35,7 @@ func Slice[A, B any](in []A, convert func(A) (B, error)) ([]B, error) {
 }
 
 // SliceToMap convert []T to map[K]T using function key(T) K.
+// If key() returns the same value for multiple slice elements, only the last element will be saved.
 func SliceToMap[T any, K comparable](in []T, key func(T) K) map[K]T {
 	out := make(map[K]T, len(in))
 	for _, t := range in {
@@ -53,6 +54,18 @@ func MapToSlice[T any, K comparable](in map[K]T) []T {
 	out := make([]T, 0, len(in))
 	for _, t := range in {
 		out = append(out, t)
+	}
+
+	return out
+}
+
+// SplitSlice convert []T to map[K][]T using function key(T) K.
+func SplitSlice[T any, K comparable](in []T, key func(T) K) map[K][]T {
+	out := make(map[K][]T, len(in))
+
+	for _, t := range in {
+		k := key(t)
+		out[k] = append(out[k], t)
 	}
 
 	return out
