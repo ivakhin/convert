@@ -6,9 +6,9 @@ func SliceSafe[A, B any](in []A, convert func(A) B) []B {
 		return nil
 	}
 
-	out := make([]B, 0, len(in))
-	for _, a := range in {
-		out = append(out, convert(a))
+	out := make([]B, len(in))
+	for i := range out {
+		out[i] = convert(in[i])
 	}
 
 	return out
@@ -20,15 +20,15 @@ func Slice[A, B any](in []A, convert func(A) (B, error)) ([]B, error) {
 		return nil, nil
 	}
 
-	out := make([]B, 0, len(in))
+	out := make([]B, len(in))
 
-	for _, a := range in {
-		b, err := convert(a)
+	for i := range out {
+		b, err := convert(in[i])
 		if err != nil {
 			return nil, err
 		}
 
-		out = append(out, b)
+		out[i] = b
 	}
 
 	return out, nil
@@ -51,9 +51,12 @@ func MapToSlice[T any, K comparable](in map[K]T) []T {
 		return nil
 	}
 
-	out := make([]T, 0, len(in))
+	out := make([]T, len(in))
+	i := 0
+
 	for _, t := range in {
-		out = append(out, t)
+		out[i] = t
+		i++
 	}
 
 	return out
