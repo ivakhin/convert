@@ -10,7 +10,7 @@ import (
 func BenchmarkSliceSafe(b *testing.B) {
 	in := intSlice()
 
-	b.Run("with generics using convert.SliceSafe", func(b *testing.B) {
+	b.Run("convert.SliceSafe", func(b *testing.B) {
 		b.ReportAllocs()
 
 		for i := 0; i < b.N; i++ {
@@ -39,7 +39,7 @@ func BenchmarkSliceSafe(b *testing.B) {
 func BenchmarkSlice(b *testing.B) {
 	in := stringSlice()
 
-	b.Run("with generics using convert.Slice", func(b *testing.B) {
+	b.Run("convert.Slice", func(b *testing.B) {
 		b.ReportAllocs()
 
 		for i := 0; i < b.N; i++ {
@@ -73,7 +73,7 @@ func BenchmarkSlice(b *testing.B) {
 func BenchmarkSliceToMap(b *testing.B) {
 	in := intSlice()
 
-	b.Run("with generics using convert.SliceToMap", func(b *testing.B) {
+	b.Run("convert.SliceToMap", func(b *testing.B) {
 		b.ReportAllocs()
 
 		for i := 0; i < b.N; i++ {
@@ -99,10 +99,44 @@ func BenchmarkSliceToMap(b *testing.B) {
 	})
 }
 
+func BenchmarkSliceToMapWithConvert(b *testing.B) {
+	in := intSlice()
+
+	b.Run("convert.SliceToMapWithConvert", func(b *testing.B) {
+		b.ReportAllocs()
+
+		for i := 0; i < b.N; i++ {
+			_ = convert.SliceToMapWithConvert(in, func(in int) (string, string) {
+				out := strconv.Itoa(in)
+
+				return out, out
+			})
+		}
+	})
+
+	b.Run("without generics", func(b *testing.B) {
+		b.ReportAllocs()
+
+		convertFn := func(in []int) map[string]string {
+			out := make(map[string]string, len(in))
+			for _, v := range in {
+				str := strconv.Itoa(v)
+				out[str] = str
+			}
+
+			return out
+		}
+
+		for i := 0; i < b.N; i++ {
+			_ = convertFn(in)
+		}
+	})
+}
+
 func BenchmarkMapToSlice(b *testing.B) {
 	in := convert.SliceToMap(intSlice(), strconv.Itoa)
 
-	b.Run("with generics using convert.MapToSlice", func(b *testing.B) {
+	b.Run("convert.MapToSlice", func(b *testing.B) {
 		b.ReportAllocs()
 
 		for i := 0; i < b.N; i++ {
@@ -131,7 +165,7 @@ func BenchmarkMapToSlice(b *testing.B) {
 func BenchmarkSplitSlice(b *testing.B) {
 	in := intSlice()
 
-	b.Run("with generics using convert.SplitSlice", func(b *testing.B) {
+	b.Run("convert.SplitSlice", func(b *testing.B) {
 		b.ReportAllocs()
 
 		for i := 0; i < b.N; i++ {

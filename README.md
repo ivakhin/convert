@@ -27,20 +27,23 @@ total:						(statements)	100.0%
 goos: darwin
 goarch: arm64
 pkg: github.com/ivakhin/convert
-BenchmarkSliceSafe/with_generics_using_convert.SliceSafe-8         	    7714	    150328 ns/op	  202721 B/op	    9901 allocs/op
-BenchmarkSliceSafe/without_generics-8                              	    8383	    143837 ns/op	  202721 B/op	    9901 allocs/op
+BenchmarkSliceSafe/convert.SliceSafe-8         	                 6775	    170280 ns/op	  202721 B/op	    9901 allocs/op
+BenchmarkSliceSafe/without_generics-8                            8214	    148134 ns/op	  202721 B/op	    9901 allocs/op
 
-BenchmarkSlice/with_generics_using_convert.Slice-8                 	   25006	     47835 ns/op	   81920 B/op	       1 allocs/op
-BenchmarkSlice/without_generics-8                                  	   26739	     44721 ns/op	   81920 B/op	       1 allocs/op
+BenchmarkSlice/convert.Slice-8                 	                26539	     45114 ns/op	   81920 B/op	       1 allocs/op
+BenchmarkSlice/without_generics-8                               28632	     42019 ns/op	   81920 B/op	       1 allocs/op
 
-BenchmarkSliceToMap/with_generics_using_convert.SliceToMap-8       	    2748	    435984 ns/op	  497743 B/op	    9903 allocs/op
-BenchmarkSliceToMap/without_generics-8                             	    2766	    436712 ns/op	  497745 B/op	    9903 allocs/op
+BenchmarkSliceToMap/convert.SliceToMap-8       	                 2769	    431999 ns/op	  497690 B/op	    9902 allocs/op
+BenchmarkSliceToMap/without_generics-8                           2788	    430209 ns/op	  497739 B/op	    9903 allocs/op
 
-BenchmarkMapToSlice/with_generics_using_convert.MapToSlice-8       	   13453	     88736 ns/op	   81920 B/op	       1 allocs/op
-BenchmarkMapToSlice/without_generics-8                             	   13506	     88905 ns/op	   81920 B/op	       1 allocs/op
+BenchmarkSliceToMapWithConvert/convert.SliceToMapWithConvert-8   2619	    461297 ns/op	  637042 B/op	    9903 allocs/op
+BenchmarkSliceToMapWithConvert/without_generics-8                2652	    453764 ns/op	  637080 B/op	    9903 allocs/op
 
-BenchmarkSplitSlice/with_generics_using_convert.SplitSlice-8       	    1995	    592693 ns/op	  896686 B/op	   19903 allocs/op
-BenchmarkSplitSlice/without_generics-8                             	    2028	    588764 ns/op	  896702 B/op	   19903 allocs/op
+BenchmarkMapToSlice/convert.MapToSlice-8                        13512	     88878 ns/op	   81920 B/op	       1 allocs/op
+BenchmarkMapToSlice/without_generics-8                          13496	     88630 ns/op	   81920 B/op	       1 allocs/op
+
+BenchmarkSplitSlice/convert.SplitSlice-8                         2014	    596770 ns/op	  896667 B/op	   19903 allocs/op
+BenchmarkSplitSlice/without_generics-8                           2050	    584057 ns/op	  896677 B/op	   19903 allocs/op
 PASS
 ok  	github.com/ivakhin/convert	14.925s
 ```

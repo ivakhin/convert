@@ -45,6 +45,19 @@ func SliceToMap[T any, K comparable](in []T, key func(T) K) map[K]T {
 	return out
 }
 
+// SliceToMapWithConvert convert []T to map[K]S using function convert(T) (key K, value S).
+// If convert() returns the same key for multiple slice elements, only the last element will be saved.
+func SliceToMapWithConvert[T, S any, K comparable](in []T, convert func(T) (K, S)) map[K]S {
+	out := make(map[K]S, len(in))
+
+	for _, t := range in {
+		key, value := convert(t)
+		out[key] = value
+	}
+
+	return out
+}
+
 // MapToSlice make slice []T from map[K]T.
 func MapToSlice[T any, K comparable](in map[K]T) []T {
 	if in == nil {

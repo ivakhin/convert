@@ -182,6 +182,52 @@ func TestSliceToMap(t *testing.T) {
 	})
 }
 
+func TestSliceToMapWithConvert(t *testing.T) {
+	t.Parallel()
+
+	convertFn := func(in int) (string, string) {
+		out := strconv.Itoa(in)
+
+		return out, out
+	}
+
+	t.Run("nil", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       []int
+			expected = make(map[string]string)
+		)
+
+		actual := convert.SliceToMapWithConvert(in, convertFn)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("empty", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = make([]int, 0)
+			expected = make(map[string]string)
+		)
+
+		actual := convert.SliceToMapWithConvert(in, convertFn)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("regular", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = []int{1, 2, 3}
+			expected = map[string]string{"1": "1", "2": "2", "3": "3"}
+		)
+
+		actual := convert.SliceToMapWithConvert(in, convertFn)
+		assert.Equal(t, actual, expected)
+	})
+}
+
 func TestSplitSlice(t *testing.T) {
 	t.Parallel()
 
