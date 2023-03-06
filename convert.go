@@ -75,6 +75,23 @@ func MapToSlice[T any, K comparable](in map[K]T) []T {
 	return out
 }
 
+// MapToSliceSafeWithConvert make slice []S from map[K]T, using function convert(T) S.
+func MapToSliceSafeWithConvert[T, S any, K comparable](in map[K]T, convert func(T) S) []S {
+	if in == nil {
+		return nil
+	}
+
+	out := make([]S, len(in))
+	i := 0
+
+	for _, t := range in {
+		out[i] = convert(t)
+		i++
+	}
+
+	return out
+}
+
 // SplitSlice convert []T to map[K][]T using function key(T) K.
 func SplitSlice[T any, K comparable](in []T, key func(T) K) map[K][]T {
 	out := make(map[K][]T, len(in))

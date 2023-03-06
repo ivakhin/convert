@@ -162,6 +162,37 @@ func BenchmarkMapToSlice(b *testing.B) {
 	})
 }
 
+func BenchmarkMapToSliceSafeWithConvert(b *testing.B) {
+	in := convert.SliceToMap(intSlice(), func(i int) int {
+		return i
+	})
+
+	b.Run("convert.MapToSliceSafeWithConvertSafe", func(b *testing.B) {
+		b.ReportAllocs()
+
+		for i := 0; i < b.N; i++ {
+			_ = convert.MapToSliceSafeWithConvert(in, strconv.Itoa)
+		}
+	})
+
+	b.Run("without generics", func(b *testing.B) {
+		b.ReportAllocs()
+
+		convertFn := func(in map[int]int) []string {
+			out := make([]string, 0, len(in))
+			for _, v := range in {
+				out = append(out, strconv.Itoa(v))
+			}
+
+			return out
+		}
+
+		for i := 0; i < b.N; i++ {
+			_ = convertFn(in)
+		}
+	})
+}
+
 func BenchmarkSplitSlice(b *testing.B) {
 	in := intSlice()
 
