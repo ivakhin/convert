@@ -103,3 +103,15 @@ func SplitSlice[T any, K comparable](in []T, key func(T) K) map[K][]T {
 
 	return out
 }
+
+// SplitSliceWithConvert convert []T to map[K][]S using function key(T) (key K, value S).
+func SplitSliceWithConvert[T, S any, K comparable](in []T, convert func(T) (K, S)) map[K][]S {
+	out := make(map[K][]S, len(in))
+
+	for _, t := range in {
+		k, v := convert(t)
+		out[k] = append(out[k], v)
+	}
+
+	return out
+}
