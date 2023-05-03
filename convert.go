@@ -115,3 +115,17 @@ func SplitSliceWithConvert[T, S any, K comparable](in []T, convert func(T) (K, S
 
 	return out
 }
+
+// Keys returns unordered slice of map keys.
+func Keys[T any, K comparable](in map[K]T) []K {
+	if in == nil {
+		return nil
+	}
+
+	out := make([]K, 0, len(in))
+	for key := range in {
+		out = append(out, key)
+	}
+
+	return out
+}

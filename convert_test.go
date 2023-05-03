@@ -1,3 +1,4 @@
+//nolint:dupl
 package convert_test
 
 import (
@@ -351,5 +352,45 @@ func TestSplitSliceWithConvert(t *testing.T) {
 
 		actual := convert.SplitSliceWithConvert(in, convertFn)
 		assert.Equal(t, actual, expected)
+	})
+}
+
+func TestKeys(t *testing.T) {
+	t.Parallel()
+
+	t.Run("nil", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       map[string]int
+			expected []string
+		)
+
+		actual := convert.Keys(in)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("empty", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = make(map[string]int)
+			expected = make([]string, 0)
+		)
+
+		actual := convert.Keys(in)
+		assert.Equal(t, actual, expected)
+	})
+
+	t.Run("regular", func(t *testing.T) {
+		t.Parallel()
+
+		var (
+			in       = map[string]int{"1": 1, "2": 2, "3": 3}
+			expected = []string{"1", "2", "3"}
+		)
+
+		actual := convert.Keys(in)
+		assert.ElementsMatch(t, actual, expected)
 	})
 }

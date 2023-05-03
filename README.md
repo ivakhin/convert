@@ -4,21 +4,21 @@
 Go package with conversion methods based on generics.
 
 ```
-SliceSafe  convert []A to   []B       using function convert(A) B
-Slice      convert []A to   []B       using function convert(A) (B, error)
-SliceToMap convert []T to   map[K]T   using function key(T) K
-SplitSlice convert []T to   map[K][]T using function key(T) K
-MapToSlice make    []T from map[K]T
+SliceSafe                       convert     []A to      []B         using function convert(A) B
+Slice                           convert     []A to      []B         using function convert(A) (B, error)
+SliceToMap                      convert     []T to      map[K]T     using function key(T) K
+SplitSlice                      convert     []T to      map[K][]T   using function key(T) K
+SplitSliceWithConvert           convert     []T to      map[K][]S   using function key(T) (key K, value S)
+MapToSlice                      make        []T from    map[K]T
+MapToSliceSafeWithConvert       make slice  []S from    map[K]T     using function convert(T) S
+Keys                            returns unordered slice of map keys
+
 ```
 
 #### Test coverage
 ```
-github.com/ivakhin/convert/convert.go:4:	SliceSafe	100.0%
-github.com/ivakhin/convert/convert.go:18:	Slice		100.0%
-github.com/ivakhin/convert/convert.go:39:	SliceToMap	100.0%
-github.com/ivakhin/convert/convert.go:49:	MapToSlice	100.0%
-github.com/ivakhin/convert/convert.go:63:	SplitSlice	100.0%
-total:						(statements)	100.0%
+go test -race -cover -count 1000 ./...
+ok      github.com/ivakhin/convert      0.464s  coverage: 100.0% of statements
 ```
 
 #### Benchmarks
@@ -50,6 +50,9 @@ BenchmarkSplitSlice/without_generics-8                                          
 
 BenchmarkSplitSliceWithConvert/convert.SplitSliceWithConvert-8                      1525   795688 ns/op  936384 B/op  19903 allocs/op
 BenchmarkSplitSliceWithConvert/without_generics-8                                   1531   792817 ns/op  936346 B/op  19903 allocs/op
+
+BenchmarkKeys/convert.Keys-8                                                        10000  100442 ns/op  163840 B/op      1 allocs/op
+BenchmarkKeys/without_generics-8                                                    10000  100549 ns/op  163840 B/op      1 allocs/op
 PASS
 ok      github.com/ivakhin/convert 14.925s
 ```

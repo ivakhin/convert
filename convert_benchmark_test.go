@@ -274,3 +274,32 @@ func stringSlice() []string {
 
 	return in
 }
+
+func BenchmarkKeys(b *testing.B) {
+	in := convert.SliceToMap(intSlice(), strconv.Itoa)
+
+	b.Run("convert.Keys", func(b *testing.B) {
+		b.ReportAllocs()
+
+		for i := 0; i < b.N; i++ {
+			_ = convert.Keys(in)
+		}
+	})
+
+	b.Run("without generics", func(b *testing.B) {
+		b.ReportAllocs()
+
+		convertFn := func(in map[string]int) []string {
+			out := make([]string, 0, len(in))
+			for key := range in {
+				out = append(out, key)
+			}
+
+			return out
+		}
+
+		for i := 0; i < b.N; i++ {
+			_ = convertFn(in)
+		}
+	})
+}
